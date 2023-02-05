@@ -1,8 +1,12 @@
 package com.cus.zbp.user.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import com.cus.zbp.entity.Software;
 import lombok.Builder;
 import lombok.Data;
 
@@ -25,4 +29,8 @@ public class User implements UserStatusCode {
 
   String resetPasswordKey;
   LocalDateTime resetPasswordLimitDate;
+
+  // software relation
+  @OneToMany(mappedBy = "user")
+  private List<Software> softwares = new ArrayList<>();
 }
