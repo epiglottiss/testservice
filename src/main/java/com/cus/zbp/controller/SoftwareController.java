@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.cus.zbp.dto.CreateSoftware;
-import com.cus.zbp.dto.DeleteSoftware;
-import com.cus.zbp.dto.SoftwareInfo;
+import com.cus.zbp.dto.software.CreateSoftware;
+import com.cus.zbp.dto.software.DeleteSoftware;
+import com.cus.zbp.dto.software.SoftwareInfo;
 import com.cus.zbp.service.SoftwareService;
 import lombok.RequiredArgsConstructor;
 

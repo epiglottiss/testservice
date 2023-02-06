@@ -16,7 +16,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import com.cus.zbp.dto.SoftwareDto;
+import com.cus.zbp.dto.software.SoftwareDto;
 import com.cus.zbp.entity.Software;
 import com.cus.zbp.exception.SoftwareException;
 import com.cus.zbp.repository.SoftwareRepository;

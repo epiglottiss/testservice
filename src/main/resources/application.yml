@@ -24,4 +24,12 @@ spring:
             enable: true
             
 logging:
-  config: classpath:logback.xml        
+  config: classpath:logback.xml      
+  
+app:
+  server: localhost
+  port: 8080
+
+        
+        
+        

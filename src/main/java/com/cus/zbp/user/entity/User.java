@@ -7,13 +7,14 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import com.cus.zbp.entity.Software;
+import com.cus.zbp.type.UserStatus;
 import lombok.Builder;
 import lombok.Data;
 
 @Entity
 @Data
 @Builder
-public class User implements UserStatusCode {
+public class User {
   @Id
   String email;
   String password;
@@ -25,7 +26,7 @@ public class User implements UserStatusCode {
   LocalDateTime emailAuthDate;
   String emailAuthKey;
 
-  String userStatus;
+  UserStatus userStatus;
 
   String resetPasswordKey;
   LocalDateTime resetPasswordLimitDate;

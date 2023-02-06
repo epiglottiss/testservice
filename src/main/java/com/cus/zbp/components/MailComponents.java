@@ -1,32 +1,22 @@
 package com.cus.zbp.components;
 
 import javax.mail.internet.MimeMessage;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class MailComponents {
 
   private final JavaMailSender javaMailSender;
 
-  public void sendMailTest() {
-
-    SimpleMailMessage msg = new SimpleMailMessage();
-    msg.setTo("iop245@naver.com");
-    msg.setSubject("Test mail subject");
-    msg.setText("Test mail text");
-
-    javaMailSender.send(msg);
-  }
-
-  public boolean sendMail(String mail, String subject, String text) {
-
-    boolean result = false;
+  public void sendMail(String mail, String subject, String text) throws MailException {
 
     MimeMessagePreparator msg = new MimeMessagePreparator() {
       @Override
@@ -38,14 +28,6 @@ public class MailComponents {
       }
     };
 
-    try {
-      javaMailSender.send(msg);
-      result = true;
-
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-    }
-
-    return result;
+    javaMailSender.send(msg);
   }
 }

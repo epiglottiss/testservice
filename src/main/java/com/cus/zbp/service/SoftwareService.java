@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.cus.zbp.dto.SoftwareDto;
+import com.cus.zbp.dto.software.SoftwareDto;
 import com.cus.zbp.entity.Software;
 import com.cus.zbp.exception.SoftwareException;
 import com.cus.zbp.repository.SoftwareRepository;

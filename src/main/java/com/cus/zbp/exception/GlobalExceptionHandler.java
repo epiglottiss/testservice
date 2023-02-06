@@ -1,5 +1,6 @@
 package com.cus.zbp.exception;
 
+import org.springframework.mail.MailException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import lombok.extern.slf4j.Slf4j;
@@ -16,4 +17,10 @@ public class GlobalExceptionHandler {
   public void handleException(SoftwareException e) {
     log.error("SoftwareException occured.", e);
   }
+
+  @ExceptionHandler(MailException.class)
+  public void handleException(MailException e) {
+    log.error("MailException occured.", e);
+  }
+
 }

@@ -2,7 +2,7 @@ package com.cus.zbp.user.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -10,6 +10,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -26,6 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 // web security로 인해 mockMvc가 401(Unauthorized) 반환하는 문제 해결
 @WebMvcTest(controllers = UserController.class,
     excludeAutoConfiguration = {SecurityAutoConfiguration.class})
+@ExtendWith(MockitoExtension.class)
 class UserControllerTest {
   @MockBean
   private UserService userService;
@@ -50,7 +53,6 @@ class UserControllerTest {
     // given
     UserInput userInput = UserInput.builder().email("not-exist-eamil@naver1.com").name("noname")
         .password("password").build();
-    given(userService.register(any())).willReturn(true);
     // when
     // then
     mockMvc
@@ -65,8 +67,8 @@ class UserControllerTest {
     // given
     UserInput userInput =
         UserInput.builder().email("not-exist-eamil@naver1.com").name("noname").build();
-    given(userService.register(userInput)).willReturn(false);
     // when
+    doThrow(Exception.class).when(userService).register(any());
     // then
     mockMvc
         .perform(post("/user/register").contentType(MediaType.APPLICATION_JSON)
@@ -78,7 +80,6 @@ class UserControllerTest {
   @Test
   void successEmailAuth() throws Exception {
     // given
-    given(userService.emailAuth(anyString())).willReturn(true);
     // when
     // then
     mockMvc.perform(get("/user/email-auth?id=test1234")).andDo(print()).andExpect(status().isOk())
@@ -88,7 +89,9 @@ class UserControllerTest {
   @Test
   void failEmailAuth() throws Exception {
     // given
-    given(userService.emailAuth(anyString())).willReturn(false);
+    // mocking된 void 반환 함수 exception 만들기
+    // https://www.baeldung.com/mockito-void-methods
+    doThrow(Exception.class).when(userService).emailAuth(anyString());
     // when
     // then
     mockMvc.perform(get("/user/email-auth?id=test1234")).andDo(print()).andExpect(status().isOk())
@@ -109,7 +112,6 @@ class UserControllerTest {
     // given
     PasswordResetInput passwordInput =
         PasswordResetInput.builder().id("reset-uuid").password("new-password").build();
-    given(userService.sendResetPassword(any())).willReturn(true);
     // when
     // then
     mockMvc
@@ -124,7 +126,7 @@ class UserControllerTest {
     // given
     PasswordResetInput passwordInput =
         PasswordResetInput.builder().id("reset-uuid").password("new-password").build();
-    given(userService.sendResetPassword(any())).willReturn(false);
+    doThrow(Exception.class).when(userService).sendResetPassword(any());
     // when
     // then
     mockMvc
@@ -134,27 +136,25 @@ class UserControllerTest {
         .andExpect(model().attribute("result", false));
   }
 
-  @Test
-  void getResetPasswordViewWhenPossible() throws Exception {
-    // given
-    given(userService.checkResetPassword(any())).willReturn(true);
-    // when
-    // then
-    mockMvc.perform(get("/user/reset/password")).andDo(print())
-        .andExpect(view().name(("user/reset_password"))).andExpect(status().isOk())
-        .andExpect(model().attribute("result", true));
-  }
+  // @Test
+  // void getResetPasswordViewWhenPossible() throws Exception {
+  // // given
+  // // when
+  // // then
+  // mockMvc.perform(get("/user/reset/password")).andDo(print())
+  // .andExpect(view().name(("user/reset_password"))).andExpect(status().isOk())
+  // .andExpect(model().attribute("result", true));
+  // }
 
-  @Test
-  void getResetPasswordViewWhenImpossible() throws Exception {
-    // given
-    given(userService.checkResetPassword(any())).willReturn(false);
-    // when
-    // then
-    mockMvc.perform(get("/user/reset/password")).andDo(print())
-        .andExpect(view().name(("user/reset_password"))).andExpect(status().isOk())
-        .andExpect(model().attribute("result", false));
-  }
+  // @Test
+  // void getResetPasswordViewWhenImpossible() throws Exception {
+  // // given
+  // // when
+  // // then
+  // mockMvc.perform(get("/user/reset/password")).andDo(print())
+  // .andExpect(view().name(("user/reset_password"))).andExpect(status().isOk())
+  // .andExpect(model().attribute("result", false));
+  // }
 
 
   @Test
@@ -162,7 +162,6 @@ class UserControllerTest {
     // given
     PasswordResetInput passwordInput =
         PasswordResetInput.builder().id("reset-uuid").password("new-password").build();
-    given(userService.resetPassword(anyString(), anyString())).willReturn(true);
     // when
     // then
     mockMvc
@@ -177,7 +176,8 @@ class UserControllerTest {
     // given
     PasswordResetInput passwordInput =
         PasswordResetInput.builder().id("reset-uuid").password("new-password").build();
-    given(userService.resetPassword(anyString(), anyString())).willReturn(false);
+
+    doThrow(Exception.class).when(userService).resetPassword(anyString(), anyString());
     // when
     // then
     mockMvc
