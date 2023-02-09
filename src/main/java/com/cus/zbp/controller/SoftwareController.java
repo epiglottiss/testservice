@@ -37,7 +37,7 @@ public class SoftwareController {
   }
 
   @GetMapping("/name/{name}")
-  public ResponseEntity<SoftwareInfo> getSoftwareListByName(@PathVariable String name) {
+  public ResponseEntity<SoftwareInfo> getSoftwareByName(@PathVariable String name) {
     return ResponseEntity.ok(SoftwareInfo.fromDto(softwareService.getSoftwareByName(name)));
   }
 
