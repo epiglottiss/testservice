@@ -23,4 +23,9 @@ public class GlobalExceptionHandler {
     log.error("MailException occured.", e);
   }
 
+  @ExceptionHandler(VersionException.class)
+  public void handleException(VersionException e) {
+    log.error("VersionException occured.", e);
+  }
+
 }

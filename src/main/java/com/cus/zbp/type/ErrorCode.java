@@ -28,8 +28,10 @@ public enum ErrorCode {
 
   SOFTWARE_USER_UNMATCH("Software의 user가 다릅니다."),
 
+  // version exception
+  VERSION_NAME_ALREADY_EXIST("해당 소프트웨어에 동일한 버전명이 존재합니다."),
 
-  ;
+  VERSION_NOT_EXIST("존재하지 않는 버전입니다."),;
 
   private final String discrption;
 }
