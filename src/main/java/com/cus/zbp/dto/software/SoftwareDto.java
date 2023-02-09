@@ -1,4 +1,4 @@
-package com.cus.zbp.dto;
+package com.cus.zbp.dto.software;
 
 import java.time.LocalDateTime;
 import com.cus.zbp.entity.Software;
