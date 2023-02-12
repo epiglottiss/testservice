@@ -43,6 +43,11 @@ public enum ErrorCode {
 
   TEST_CATEGORY_ID_NOT_FOUND("해당 카테고리의 키가 없습니다.", 403),
 
+  // VersionUser exception(501 ~ 599)
+  VERSION_NOT_ALLOWABLE("버전이 전체공개 또는 비공개상태여서 사용자의 권한을 등록 및 수정 할 수 없습니다.", 501),
+
+  VERSION_USER_HAS_AUTH("이미 권한이 있는 사용자입니다.", 502),
+
 
 
   ;

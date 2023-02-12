@@ -4,16 +4,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.cus.zbp.dto.versionuser.VersionUserDto;
 import com.cus.zbp.dto.version.VersionDto;
 import com.cus.zbp.entity.Software;
 import com.cus.zbp.entity.Version;
+import com.cus.zbp.entity.VersionUser;
 import com.cus.zbp.exception.SoftwareException;
 import com.cus.zbp.exception.UserException;
+import com.cus.zbp.exception.VersionAuthException;
 import com.cus.zbp.exception.VersionException;
 import com.cus.zbp.repository.SoftwareRepository;
 import com.cus.zbp.repository.VersionRepository;
+import com.cus.zbp.repository.VersionUserRepository;
 import com.cus.zbp.type.ErrorCode;
 import com.cus.zbp.type.VersionAccessLevel;
+import com.cus.zbp.user.entity.User;
 import com.cus.zbp.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +28,7 @@ public class VersionService {
   private final UserRepository userRepository;
   private final SoftwareRepository softwareRepository;
   private final VersionRepository versionRepository;
+  private final VersionUserRepository versionUserRepository;
 
   @Transactional
   public VersionDto createVersion(String name, long softwareId, String location,
@@ -81,6 +87,50 @@ public class VersionService {
 
     versionRepository.delete(version);
     return VersionDto.from(version);
+  }
+
+  @Transactional
+  public VersionUserDto createUserAuthToVersion(long userId, long versionId) {
+    User user = userRepository.findById(userId)
+        .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
+
+    Version version = versionRepository.findById(versionId)
+        .orElseThrow(() -> new VersionException(ErrorCode.VERSION_NOT_EXIST));
+    if (version.getAccessLevel() != VersionAccessLevel.ALLOWABLE) {
+      throw new VersionAuthException(ErrorCode.VERSION_NOT_ALLOWABLE);
+    }
+
+    versionUserRepository.findByVersionIdAndUserId(version.getId(), user.getId())
+        .ifPresent(auth -> {
+          throw new VersionAuthException(ErrorCode.VERSION_USER_HAS_AUTH);
+        });
+
+    return VersionUserDto.from(
+        versionUserRepository.save(VersionUser.builder().version(version).user(user).build()));
+  }
+
+  @Transactional
+  public VersionUserDto deleteUserAuthOfVersion(long userId, long versionId) {
+    User user = userRepository.findById(userId)
+        .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
+
+    Version version = versionRepository.findById(versionId)
+        .orElseThrow(() -> new VersionException(ErrorCode.VERSION_NOT_EXIST));
+    if (version.getAccessLevel() != VersionAccessLevel.ALLOWABLE) {
+      throw new VersionAuthException(ErrorCode.VERSION_NOT_ALLOWABLE);
+    }
+
+    return VersionUserDto.from(versionUserRepository.deleteByVersionIdAndUserId(version.getId(), user.getId()));
+  }
+
+  @Transactional
+  public List<VersionUserDto> getAllowedUserOfVersion(long versionId){
+    Version version = versionRepository.findById(versionId)
+            .orElseThrow(() -> new VersionException(ErrorCode.VERSION_NOT_EXIST));
+    if (version.getAccessLevel() != VersionAccessLevel.ALLOWABLE) {
+      throw new VersionAuthException(ErrorCode.VERSION_NOT_ALLOWABLE);
+    }
+    return versionUserRepository.findByVersion_Id(versionId).stream().map(VersionUserDto::from).collect(Collectors.toList());
   }
 
 

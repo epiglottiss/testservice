@@ -3,14 +3,12 @@ package com.cus.zbp.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
+
+import com.cus.zbp.dto.versionuser.CreateVersionUser;
+import com.cus.zbp.dto.versionuser.DeleteVersionUser;
+import com.cus.zbp.dto.versionuser.VersionUserDto;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.cus.zbp.dto.version.CreateVersion;
 import com.cus.zbp.dto.version.DeleteVersion;
 import com.cus.zbp.dto.version.VersionDetail;
@@ -54,6 +52,25 @@ public class VersionController {
       @RequestBody @Valid DeleteVersion.Request request) {
     return ResponseEntity.ok(DeleteVersion.Response.from(versionService
         .deleteVersion(request.getUserId(), request.getSoftwareId(), request.getVersionId())));
+  }
+
+  @PostMapping("/userauth")
+  public ResponseEntity<CreateVersionUser.Response> createUserAuthToVersion(
+          @RequestBody @Valid CreateVersionUser.Request request){
+    return ResponseEntity.ok(CreateVersionUser.Response.from(versionService.createUserAuthToVersion(request.getUserId(),request.getVersionId())));
+  }
+
+  @DeleteMapping("/userauth")
+  public ResponseEntity<DeleteVersionUser.Response> deleteUserAuthOfVersion(
+          @RequestBody @Valid DeleteVersionUser.Request request) {
+    return ResponseEntity.ok(DeleteVersionUser.Response.from(versionService
+            .deleteUserAuthOfVersion(request.getUserId(),request.getVersionId())));
+  }
+
+  @GetMapping("/userauth/versionId/{versionId}")
+  public ResponseEntity<List<VersionUserDto>> getAllowedUserOfVersion(
+          @PathVariable long versionId) {
+    return ResponseEntity.ok(versionService.getAllowedUserOfVersion(versionId));
   }
 
 }

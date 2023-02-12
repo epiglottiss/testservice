@@ -1,12 +1,8 @@
 package com.cus.zbp.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import java.util.List;
+import javax.persistence.*;
+
 import com.cus.zbp.type.VersionAccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,9 +16,13 @@ public class Version extends BaseEntity {
   private long id;
   private String name;
   private String location; // 파일 저장 위치 기록
+  @Enumerated(EnumType.STRING)
   private VersionAccessLevel accessLevel;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "software_id")
   private Software software;
+
+  @OneToMany(mappedBy = "version")
+  private List<VersionUser> versionUser;
 }
