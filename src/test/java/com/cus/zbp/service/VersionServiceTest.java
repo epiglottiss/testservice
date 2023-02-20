@@ -5,8 +5,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -49,15 +50,16 @@ class VersionServiceTest {
   private VersionService versionService;
 
   @Test
-  void successCreateVersion() {
+  void successCreateVersion() throws IOException {
     // given
     Software software = Software.builder().id(12).name("soft1").build();
     Version version = Version.builder().id(1023).name("1.2.3.4").software(software).build();
     given(softwareRepository.findById(anyLong())).willReturn(Optional.of(software));
     given(versionRepository.save(any())).willReturn(version);
+    //multipartFile 테스트 방법
     // when
     VersionDto dto =
-        versionService.createVersion("1.2.3.4", 12, "Storage", VersionAccessLevel.ALLOWABLE);
+        versionService.createVersion("1.2.3.4", 12, null,"Storage", VersionAccessLevel.ALLOWABLE);
     ArgumentCaptor<Version> captor = ArgumentCaptor.forClass(Version.class);
     // then
     verify(versionRepository, times(1)).save(captor.capture());
@@ -141,9 +143,7 @@ class VersionServiceTest {
     Version version = Version.builder().id(1023).name("1.2.3.4").software(software).accessLevel(VersionAccessLevel.ALLOWABLE).build();
     given(userRepository.findById(anyLong())).willReturn(Optional.of(user));
     given(versionRepository.findById(anyLong())).willReturn(Optional.of(version));
-    given(versionUserRepository.deleteByVersionIdAndUserId(anyLong(),anyLong())).willReturn(
-            VersionUser.builder().version(version).user(user).build()
-    );
+    doNothing().when(versionUserRepository).deleteByVersionIdAndUserId(anyLong(),anyLong());
     // when
     VersionUserDto result = versionService.deleteUserAuthOfVersion(99, 1023);
     // then

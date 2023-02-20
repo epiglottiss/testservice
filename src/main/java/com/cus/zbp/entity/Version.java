@@ -4,9 +4,13 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.cus.zbp.type.VersionAccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+@AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
 @Entity
 @Builder

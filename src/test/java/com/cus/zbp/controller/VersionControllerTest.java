@@ -61,10 +61,10 @@ class VersionControllerTest {
         .softwareName("soft1").name("1.2.3.4").build();
     byte[] bytes = new byte[10];
 
-    InputStream stream = new ClassPathResource("classpath:logs/log_file.log").getInputStream();
+    InputStream stream = new ClassPathResource("classpath:pom.xml").getInputStream();
 
     MultipartFile multipartFile = new MockMultipartFile("uploadFile", stream);
-    given(versionService.createVersion(anyString(), anyInt(), anyString(), any())).willReturn(dto);
+    given(versionService.createVersion(anyString(), anyInt(), any(), anyString(), any())).willReturn(dto);
 
     // when
     // then
@@ -73,7 +73,7 @@ class VersionControllerTest {
         .perform(post("/version").contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
                 .writeValueAsString(new CreateVersion.Request("1.2.3.4", 1,
-                    VersionAccessLevel.ALL_OPEN, multipartFile))))
+                        VersionAccessLevel.ALL_OPEN,multipartFile,""))))
         .andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.name").value("1.2.3.4"));
   }
 
@@ -104,7 +104,7 @@ class VersionControllerTest {
     // then
     mockMvc
         .perform(get("/version/detail").contentType(MediaType.APPLICATION_JSON).content(
-            objectMapper.writeValueAsString(new VersionDetail.Request(1, 2, "1.2.3.4", 10))))
+            objectMapper.writeValueAsString(new VersionDetail.Request(1, 2, 10))))
         .andExpect(status().isOk()).andExpect(jsonPath("$.name").value("1.2.3.4"));
   }
 
@@ -117,7 +117,7 @@ class VersionControllerTest {
     // then
     mockMvc
         .perform(delete("/version").contentType(MediaType.APPLICATION_JSON).content(
-            objectMapper.writeValueAsString(new VersionDetail.Request(1, 2, "1.2.3.4", 10))))
+            objectMapper.writeValueAsString(new VersionDetail.Request(1, 2, 10))))
         .andExpect(status().isOk()).andExpect(jsonPath("$.name").value("1.2.3.4"));
   }
 
