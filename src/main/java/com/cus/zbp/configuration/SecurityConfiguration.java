@@ -39,7 +39,7 @@ public class SecurityConfiguration {
     http.headers().frameOptions().sameOrigin();
 
     http.authorizeRequests().antMatchers("/", "/user/login", "/user/register", "/user/email-auth",
-        "/user/find/password", "/user/reset/password").permitAll();
+        "/user/find/password", "/user/reset/password","/swagger-resources/**","/swagger-ui.html").permitAll();
 
     http.formLogin().loginPage("/user/login").failureHandler(getFailureHandler()).permitAll();
 
@@ -51,5 +51,4 @@ public class SecurityConfiguration {
     http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
     return http.build();
   }
-
 }
