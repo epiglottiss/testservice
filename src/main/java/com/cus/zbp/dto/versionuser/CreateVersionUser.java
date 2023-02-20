@@ -1,14 +1,12 @@
 package com.cus.zbp.dto.versionuser;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 public class CreateVersionUser {
 
     @Getter
     @Setter
+    @NoArgsConstructor
     @AllArgsConstructor
     public static class Request {
 

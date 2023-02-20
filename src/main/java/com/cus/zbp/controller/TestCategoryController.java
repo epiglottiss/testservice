@@ -24,7 +24,7 @@ public class TestCategoryController {
   private final TestCategoryService testCategoryService;
 
   @PostMapping
-  public ResponseEntity<CreateTestCategory.Response> createVersion(
+  public ResponseEntity<CreateTestCategory.Response> createTestCategory(
       @RequestBody @Valid CreateTestCategory.Request request) {
 
     return ResponseEntity.ok(
@@ -45,7 +45,7 @@ public class TestCategoryController {
   }
 
   @DeleteMapping
-  public ResponseEntity<DeleteTestCategory.Response> deleteVersion(
+  public ResponseEntity<DeleteTestCategory.Response> deleteTestCategory(
       @RequestBody @Valid DeleteTestCategory.Request request) {
     return ResponseEntity
         .ok(DeleteTestCategory.Response.from(testCategoryService.deleteVersion(request.getId())));

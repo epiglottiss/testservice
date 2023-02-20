@@ -1,14 +1,13 @@
 package com.cus.zbp.user.service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -25,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
   private final UserRepository userRepository;
   private final MailComponents mailComponents;
 
@@ -47,8 +46,8 @@ public class UserService {
   }
 
   @Transactional
-  public void register(UserInput parameter) throws Exception {
-    userRepository.findById(parameter.getEmail()).ifPresent(user -> {
+  public void register(UserInput parameter) {
+    userRepository.findByEmail(parameter.getEmail()).ifPresent(user -> {
       throw new UserException(ErrorCode.EMAIL_ALREADY_EXIST);
     });
 
@@ -58,6 +57,16 @@ public class UserService {
     User user = User.builder().email(parameter.getEmail()).name(parameter.getName())
         .password(encPassword).registerDate(LocalDateTime.now()).emailAuth(false).emailAuthKey(uuid)
         .userStatus(UserStatus.MEMBER_STATUS_REQ).build();
+
+    //이메일인증 회피를 위한 임시 코드
+    if(parameter.getNoEmailAuth()){
+      user.setEmailAuth(true);
+      user.setEmailAuthKey("withoutMailAuth");
+      user.setUserStatus(UserStatus.MEMBER_STATUS_ING);
+      user.setEmailAuthDate(LocalDateTime.now());
+      userRepository.save(user);
+      return;
+    }
     userRepository.save(user);
 
     String email = parameter.getEmail();
@@ -82,21 +91,22 @@ public class UserService {
     userRepository.save(user);
   }
 
+  @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    Optional<User> optionalUser = userRepository.findById(username);
-    if (!optionalUser.isPresent()) {
+    Optional<User> optionalUser = userRepository.findByEmail(username);
+    if (optionalUser.isEmpty()) {
       throw new UsernameNotFoundException("회원 정보가 존재하지 않습니다.");
     }
 
     User user = optionalUser.get();
 
-    if (user.getUserStatus().equals(UserStatus.MEMBER_STATUS_REQ)) {
+    if (user.getUserStatus() == UserStatus.MEMBER_STATUS_REQ) {
       throw new UsernameNotFoundException("이메일 인증 미완료 상태입니다.");
     }
-    if (user.getUserStatus().equals(UserStatus.MEMBER_STATUS_STOP)) {
+    if (user.getUserStatus() == UserStatus.MEMBER_STATUS_STOP) {
       throw new UsernameNotFoundException("이용 정지된 아이디입니다.");
     }
-    if (user.getUserStatus().equals(UserStatus.MEMBER_STATUS_WITHDRAW)) {
+    if (user.getUserStatus() == UserStatus.MEMBER_STATUS_WITHDRAW) {
       throw new UsernameNotFoundException("탈퇴한 아이디입니다.");
     }
 
@@ -142,4 +152,8 @@ public class UserService {
     userRepository.save(user);
   }
 
+  public long getUserPkByEmail(String email) {
+    User user = userRepository.findByEmail(email).orElseThrow(()->new UserException(ErrorCode.USER_NOT_FOUND));
+    return user.getId();
+  }
 }

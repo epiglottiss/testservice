@@ -1,10 +1,6 @@
 package com.cus.zbp.user.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -47,7 +43,7 @@ class UserServiceTest {
 
     UserInput userInput = UserInput.builder().email("not-exist-email@naver1.com").name("noname")
         .password(password).build();
-    given(userRepository.findById(anyString())).willReturn(Optional.empty());
+    given(userRepository.findByEmail(anyString())).willReturn(Optional.empty());
 
     given(userRepository.save(any())).willReturn(User.builder().email("not-exist-email@naver1.com")
         .name("noname").password(encPassword).registerDate(LocalDateTime.now()).emailAuth(false)
@@ -61,7 +57,7 @@ class UserServiceTest {
     assertEquals("not-exist-email@naver1.com", captor.getValue().getEmail());
     assertEquals("noname", captor.getValue().getName());
     assertNotEquals("password", captor.getValue().getPassword());
-    assertEquals(false, captor.getValue().isEmailAuth());
+    assertFalse(captor.getValue().isEmailAuth());
     assertEquals(UserStatus.MEMBER_STATUS_REQ, captor.getValue().getUserStatus());
   }
 
@@ -72,7 +68,7 @@ class UserServiceTest {
         .password("password").build();
     User user = User.builder().email("not-exist-email@naver1.com").name("noname")
         .password("password").build();
-    given(userRepository.findById(anyString())).willReturn(Optional.of(user));
+    given(userRepository.findByEmail(anyString())).willReturn(Optional.of(user));
     // when
     UserException e = assertThrows(UserException.class, () -> userService.register(userInput));
     // then
@@ -96,7 +92,7 @@ class UserServiceTest {
     // then
     verify(userRepository, times(1)).save(captor.capture());
     assertEquals(UserStatus.MEMBER_STATUS_ING, captor.getValue().getUserStatus());
-    assertEquals(true, captor.getValue().isEmailAuth());
+    assertTrue(captor.getValue().isEmailAuth());
     assertNotNull(captor.getValue().getEmailAuthDate());
   }
 
@@ -128,7 +124,7 @@ class UserServiceTest {
   @Test
   void failLoadUserByUsername_usernameNotFound() {
     // given
-    given(userRepository.findById(anyString())).willReturn(Optional.empty());
+    given(userRepository.findByEmail(anyString())).willReturn(Optional.empty());
     // when
     Exception e = assertThrows(Exception.class, () -> userService.loadUserByUsername("any"));
     // then
@@ -142,7 +138,7 @@ class UserServiceTest {
         User.builder().email("not-exist-email@naver1.com").name("noname").password("password")
             .emailAuthKey("uuid").emailAuth(true).userStatus(UserStatus.MEMBER_STATUS_REQ).build();
 
-    given(userRepository.findById(anyString())).willReturn(Optional.of(user));
+    given(userRepository.findByEmail(anyString())).willReturn(Optional.of(user));
     // when
     Exception e = assertThrows(Exception.class, () -> userService.loadUserByUsername("any"));
     // then
@@ -156,7 +152,7 @@ class UserServiceTest {
         User.builder().email("not-exist-email@naver1.com").name("noname").password("password")
             .emailAuthKey("uuid").emailAuth(true).userStatus(UserStatus.MEMBER_STATUS_STOP).build();
 
-    given(userRepository.findById(anyString())).willReturn(Optional.of(user));
+    given(userRepository.findByEmail(anyString())).willReturn(Optional.of(user));
     // when
     Exception e = assertThrows(Exception.class, () -> userService.loadUserByUsername("any"));
     // then
@@ -170,7 +166,7 @@ class UserServiceTest {
         .password("password").emailAuthKey("uuid").emailAuth(true)
         .userStatus(UserStatus.MEMBER_STATUS_WITHDRAW).build();
 
-    given(userRepository.findById(anyString())).willReturn(Optional.of(user));
+    given(userRepository.findByEmail(anyString())).willReturn(Optional.of(user));
     // when
     Exception e = assertThrows(Exception.class, () -> userService.loadUserByUsername("any"));
     // then

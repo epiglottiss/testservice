@@ -14,6 +14,7 @@ import lombok.Setter;
 @Builder
 public class SoftwareDto {
 
+  private long id;
   private String name;
   private String userEmail;
   private SoftwareType type;
@@ -21,7 +22,7 @@ public class SoftwareDto {
   private LocalDateTime updatedDate;
 
   public static SoftwareDto from(Software software) {
-    return SoftwareDto.builder().name(software.getName()).type(software.getType())
+    return SoftwareDto.builder().id(software.getId()).name(software.getName()).type(software.getType())
         .userEmail(software.getUser().getEmail()).createdDate(software.getCreatedDate())
         .updatedDate(software.getUpdatedDate()).build();
   }

@@ -11,6 +11,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.cus.zbp.service.TestCategoryService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -33,6 +35,9 @@ class SoftwareControllerTest {
   private UserService userService;
   @MockBean
   private SoftwareService softwareService;
+
+  @MockBean
+  private TestCategoryService testCategoryServiceService;
 
   @Autowired
   private MockMvc mockMvc;
@@ -62,7 +67,7 @@ class SoftwareControllerTest {
   @Test
   final void successGetSoftwareListByEmail() throws Exception {
     // given
-    List<SoftwareDto> list = new ArrayList();
+    List<SoftwareDto> list = new ArrayList<>();
     SoftwareDto dto1 =
         SoftwareDto.builder().name("soft1").userEmail("test@test.com").type(SoftwareType.EXECUTABLE)
             .createdDate(LocalDateTime.now()).updatedDate(LocalDateTime.now()).build();

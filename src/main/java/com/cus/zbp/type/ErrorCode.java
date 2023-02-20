@@ -9,6 +9,10 @@ public enum ErrorCode {
   // Internal Server error (for unspecified exceptions)
   INTERNAL_SERVER_ERROR("서버 내부 오류가 발생했습니다.", 1),
 
+  // Errors not caused by server
+  ARGUMENT_NOT_VALID("요청값 Validation 오류",10),
+  REQUEST_ERROR("요청값을 읽을 수 없습니다.", 11),
+
   // user exception(101~199)
   EMAIL_ALREADY_EXIST("사용중인 이메일입니다.", 101),
 
@@ -36,6 +40,9 @@ public enum ErrorCode {
 
   VERSION_NOT_EXIST("존재하지 않는 버전입니다.", 302),
 
+  VERSION_CREATION_AMBIGUOUS("Version 생성 시 파일과 URI를 동시에 입력하여 version의 접근 방법이 모호합니다.", 303),
+
+  VERSION_FILE_SIZE_LIMIT("업로드한 파일의 크기가 초과되었습니다.", 304),
   // test category exception(401 ~ 499)
   TEST_CATEGORY_NAME_ALREADY_EXIST("해당 소프트웨어에 동일한 카테고리명이 존재합니다.", 401),
 

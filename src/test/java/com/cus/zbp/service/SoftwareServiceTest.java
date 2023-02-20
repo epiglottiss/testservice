@@ -39,7 +39,7 @@ class SoftwareServiceTest {
   void successCreateSoftware() {
     // given
     User user = User.builder().email("test@test.com").build();
-    given(userRepository.findById(anyString())).willReturn(Optional.of(user));
+    given(userRepository.findByEmail(anyString())).willReturn(Optional.of(user));
     given(softwareRepository.findByName(anyString())).willReturn(Optional.empty());
     given(softwareRepository.save(any())).willReturn(
         Software.builder().name("soft1").user(user).type(SoftwareType.EXECUTABLE).build());
@@ -60,7 +60,7 @@ class SoftwareServiceTest {
   @Test
   void failCreateSoftware_USER_NOT_FOUND() {
     // given
-    given(userRepository.findById(anyString())).willReturn(Optional.empty());
+    given(userRepository.findByEmail(anyString())).willReturn(Optional.empty());
     // when
     SoftwareException e = assertThrows(SoftwareException.class,
         () -> softwareService.createSoftware("soft1", "test@test.com", SoftwareType.EXECUTABLE));
@@ -74,7 +74,7 @@ class SoftwareServiceTest {
     // given
     User user = User.builder().email("test@test.com").build();
     Software s1 = Software.builder().name("soft1").user(user).type(SoftwareType.EXECUTABLE).build();
-    given(userRepository.findById(anyString())).willReturn(Optional.of(user));
+    given(userRepository.findByEmail(anyString())).willReturn(Optional.of(user));
     given(softwareRepository.findByName(anyString())).willReturn(Optional.of(s1));
     // when
     SoftwareException e = assertThrows(SoftwareException.class,
@@ -90,13 +90,13 @@ class SoftwareServiceTest {
     // given
     User user = User.builder().email("test@test.com").build();
 
-    List<Software> list = new ArrayList();
+    List<Software> list = new ArrayList<>();
     Software s1 = Software.builder().name("soft1").user(user).type(SoftwareType.EXECUTABLE).build();
     Software s2 = Software.builder().name("soft2").user(user).type(SoftwareType.ARCHIVE).build();
     list.add(s1);
     list.add(s2);
 
-    given(userRepository.findById(anyString())).willReturn(Optional.of(user));
+    given(userRepository.findByEmail(anyString())).willReturn(Optional.of(user));
     given(softwareRepository.findByUser_Email(anyString())).willReturn(list);
     // when
     List<SoftwareDto> result = softwareService.getSoftwareListByEmail("test@test.com");
@@ -109,7 +109,7 @@ class SoftwareServiceTest {
   @Test
   void failGetSoftwareListByEmail_USER_NOT_FOUND() {
     // given
-    given(userRepository.findById(anyString())).willReturn(Optional.empty());
+    given(userRepository.findByEmail(anyString())).willReturn(Optional.empty());
     // when
     SoftwareException e = assertThrows(SoftwareException.class,
         () -> softwareService.getSoftwareListByEmail("test@test.com"));

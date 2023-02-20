@@ -1,19 +1,14 @@
 package com.cus.zbp.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import java.util.Collection;
+import javax.persistence.*;
+
 import com.cus.zbp.type.SoftwareType;
 import com.cus.zbp.user.entity.User;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
+@AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
 @Entity
 @Builder
@@ -21,14 +16,24 @@ public class Software extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
+
+  @Column(unique = true)
   private String name;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "email", columnDefinition = "email")
+  @JoinColumn(name = "user_id")
   private User user;
 
   @Enumerated(EnumType.STRING)
   private SoftwareType type;
+
+  @OneToMany(fetch = FetchType.LAZY)
+  @JoinColumn(name = "version_id")
+  private Collection<Version> versions;
+
+  @OneToMany(fetch = FetchType.LAZY)
+  @JoinColumn(name = "category_id")
+  private Collection<TestCategory> testCategories;
 
   public void updateInfo(String name, SoftwareType type) {
     this.name = name;

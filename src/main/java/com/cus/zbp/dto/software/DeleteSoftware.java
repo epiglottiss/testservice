@@ -4,15 +4,13 @@ import java.time.LocalDateTime;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import com.cus.zbp.type.SoftwareType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 public class DeleteSoftware {
 
   @Getter
   @Setter
+  @NoArgsConstructor
   @AllArgsConstructor
   public static class Request {
     @NotNull

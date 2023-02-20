@@ -12,6 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class SoftwareInfo {
+  private long id;
   private String name;
   private String userEmail;
   private SoftwareType type;
@@ -19,7 +20,7 @@ public class SoftwareInfo {
   private LocalDateTime updatedDate;
 
   public static SoftwareInfo fromDto(SoftwareDto dto) {
-    return SoftwareInfo.builder().name(dto.getName()).userEmail(dto.getUserEmail())
+    return SoftwareInfo.builder().id(dto.getId()).name(dto.getName()).userEmail(dto.getUserEmail())
         .type(dto.getType()).createdDate(dto.getCreatedDate()).updatedDate(dto.getUpdatedDate())
         .build();
   }

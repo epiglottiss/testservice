@@ -1,18 +1,17 @@
 package com.cus.zbp.dto.version;
 
-import java.time.LocalDateTime;
-import javax.validation.constraints.NotNull;
-import org.springframework.web.multipart.MultipartFile;
 import com.cus.zbp.type.VersionAccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 public class CreateVersion {
 
   @Getter
   @Setter
+  @NoArgsConstructor
   @AllArgsConstructor
   public static class Request {
 
@@ -27,6 +26,7 @@ public class CreateVersion {
 
     private MultipartFile uploadFile;
 
+    private String uri;
   }
 
   @Getter
