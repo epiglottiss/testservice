@@ -15,10 +15,21 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: your_gmail_id@gmail.com
-    password: your_gamil_password
+    username: ioppoiq@gmail.com
+    password: lxxkcljhbjnnnkuv
     properties:
       mail:
         smtp:
           starttls:
             enable: true
+            
+logging:
+  config: classpath:logback.xml      
+  
+app:
+  server: localhost
+  port: 8080
+
+        
+        
+        

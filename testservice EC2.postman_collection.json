@@ -1,0 +1,578 @@
+{
+	"info": {
+		"_postman_id": "bd19046a-62b7-49f2-a40e-1ebb61b831a9",
+		"name": "testservice EC2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "iop245@naver.com11",
+									"type": "default"
+								},
+								{
+									"key": "password",
+									"value": "123",
+									"type": "default"
+								},
+								{
+									"key": "name",
+									"value": "cus",
+									"type": "default"
+								},
+								{
+									"key": "noEmailAuth",
+									"value": "true",
+									"description": "true일 때, 테스트 용도로 이메일인증 없이 바로 계정 등록 가능\n아무 이메일 등록 가능",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "3.37.201.178:8080/user/register",
+							"host": [
+								"3",
+								"37",
+								"201",
+								"178"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user/getpk",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "3.37.201.178:8080/user/getpk/iop245@naver.com",
+							"host": [
+								"3",
+								"37",
+								"201",
+								"178"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"getpk",
+								"iop245@naver.com"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "software",
+			"item": [
+				{
+					"name": "software",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"soft3\",\r\n    \"userEmail\": \"iop245@naver.com\",\r\n    \"type\": \"EXECUTABLE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "3.37.201.178:8080/software",
+							"host": [
+								"3",
+								"37",
+								"201",
+								"178"
+							],
+							"port": "8080",
+							"path": [
+								"software"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "software/email",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "3.37.201.178:8080/software/email/iop245@naver.com",
+							"host": [
+								"3",
+								"37",
+								"201",
+								"178"
+							],
+							"port": "8080",
+							"path": [
+								"software",
+								"email",
+								"iop245@naver.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "software/name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "3.37.201.178:8080/software/name/soft2",
+							"host": [
+								"3",
+								"37",
+								"201",
+								"178"
+							],
+							"port": "8080",
+							"path": [
+								"software",
+								"name",
+								"soft2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "software",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":1,\r\n    \"name\":\"new soft1\",\r\n    \"type\" : \"WEBSITE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "3.37.201.178:8080/software",
+							"host": [
+								"3",
+								"37",
+								"201",
+								"178"
+							],
+							"port": "8080",
+							"path": [
+								"software"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "software",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"soft3\",\r\n    \"userEmail\":\"iop245@naver.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "3.37.201.178:8080/software",
+							"host": [
+								"3",
+								"37",
+								"201",
+								"178"
+							],
+							"port": "8080",
+							"path": [
+								"software"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "version",
+			"item": [
+				{
+					"name": "version",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "\"1.0.0.3\"",
+									"type": "default"
+								},
+								{
+									"key": "softwareId",
+									"value": "1",
+									"type": "default"
+								},
+								{
+									"key": "accessLevel",
+									"value": "ALL_OPEN",
+									"type": "default"
+								},
+								{
+									"key": "uploadFile",
+									"type": "file",
+									"src": "/C:/Users/user/AppData/Local/Postman/app-9.29.0/squirrel.exe"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/version",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"version"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "\"1.0.0.0\"",
+									"disabled": true
+								},
+								{
+									"key": "softwareId",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "accessLevel",
+									"value": "ALL_OPEN",
+									"disabled": true
+								},
+								{
+									"key": "uploadFile",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "version/softwarename",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "version/detail",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "version",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"versionId\" : 4,\r\n    \"userId\" : 1,\r\n    \"name\" : \"미사용 파라미터입니다.\",\r\n    \"softwareId\" : 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "3.37.201.178:8080/version",
+							"host": [
+								"3",
+								"37",
+								"201",
+								"178"
+							],
+							"port": "8080",
+							"path": [
+								"version"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "version/userauth",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"versionId\" : 5,\r\n    \"userId\" : 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "3.37.201.178:8080/version/userauth",
+							"host": [
+								"3",
+								"37",
+								"201",
+								"178"
+							],
+							"port": "8080",
+							"path": [
+								"version",
+								"userauth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "version/userauth",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"versionId\" : 5,\r\n    \"userId\" : 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "3.37.201.178:8080/version/userauth",
+							"host": [
+								"3",
+								"37",
+								"201",
+								"178"
+							],
+							"port": "8080",
+							"path": [
+								"version",
+								"userauth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "version/userauth/versionId",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "testcategory",
+			"item": [
+				{
+					"name": "testcategory",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"category4\",\r\n    \"abbreviation\" : \"CAT4\",\r\n    \"softwareId\" : 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "3.37.201.178:8080/testcategory",
+							"host": [
+								"3",
+								"37",
+								"201",
+								"178"
+							],
+							"port": "8080",
+							"path": [
+								"testcategory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "testcategory/id",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "testcategory",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\" : 4,\r\n    \"name\" : \"newCategory\",\r\n    \"abbreviation\" : \"NCAT\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "3.37.201.178:8080/testcategory",
+							"host": [
+								"3",
+								"37",
+								"201",
+								"178"
+							],
+							"port": "8080",
+							"path": [
+								"testcategory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "testcategory",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\" : 4\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "3.37.201.178:8080/testcategory",
+							"host": [
+								"3",
+								"37",
+								"201",
+								"178"
+							],
+							"port": "8080",
+							"path": [
+								"testcategory"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "subcategory",
+			"item": [
+				{
+					"name": "subcategory",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"sub category5\",\r\n    \"testCategoryId\" : 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "3.37.201.178:8080/subcategory",
+							"host": [
+								"3",
+								"37",
+								"201",
+								"178"
+							],
+							"port": "8080",
+							"path": [
+								"subcategory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "subcategory/categoryid",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "3.37.201.178:8080/subcategory/categoryid/1",
+							"host": [
+								"3",
+								"37",
+								"201",
+								"178"
+							],
+							"port": "8080",
+							"path": [
+								"subcategory",
+								"categoryid",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

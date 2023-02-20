@@ -1,28 +1,45 @@
 package com.cus.zbp.user.entity;
 
-import java.time.LocalDateTime;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import com.cus.zbp.entity.Software;
+import com.cus.zbp.entity.VersionUser;
+import com.cus.zbp.type.UserStatus;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
+
+@AllArgsConstructor
+@RequiredArgsConstructor
 @Entity
 @Data
 @Builder
-public class User implements UserStatusCode {
+public class User {
   @Id
-  String email;
-  String password;
-  String name;
-  LocalDateTime registerDate;
-  LocalDateTime updateDate;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
+  private String email;
+  private String password;
+  private String name;
+  private LocalDateTime registerDate;
+  private LocalDateTime updateDate;
 
-  boolean emailAuth;
-  LocalDateTime emailAuthDate;
-  String emailAuthKey;
+  private boolean emailAuth;
+  private LocalDateTime emailAuthDate;
+  private String emailAuthKey;
 
-  String userStatus;
+  private UserStatus userStatus;
 
-  String resetPasswordKey;
-  LocalDateTime resetPasswordLimitDate;
+  private String resetPasswordKey;
+  private LocalDateTime resetPasswordLimitDate;
+
+  // software relation
+  @OneToMany(mappedBy = "user")
+  private List<Software> software;
+
+  @OneToMany(mappedBy = "user")
+  private List<VersionUser> versionUser;
 }

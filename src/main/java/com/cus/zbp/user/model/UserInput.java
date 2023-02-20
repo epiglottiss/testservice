@@ -9,5 +9,6 @@ public class UserInput {
   String email;
   String password;
   String name;
+  Boolean noEmailAuth;
 
 }
